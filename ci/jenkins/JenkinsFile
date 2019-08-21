@@ -24,7 +24,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit "**/result*.xml"
+                            junit testResults: "**/result*.xml", allowEmptyResults: true
                             slackSend "Build completed for Web"
                         }
                     }
@@ -41,7 +41,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit "**/result*.xml"
+                            junit testResults: "**/result*.xml", allowEmptyResults: true
                             slackSend "Build completed for Mobile"
                         }
                     }
@@ -52,7 +52,9 @@ pipeline {
                     script {
                         if (currentBuild.result == 'UNSTABLE'){
                             currentBuild.result = 'FAILURE'
-                            slackSend (color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                            slackSend (color: "#FF9FA1", mesesage: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                        } else {
+                            slackSend (color: "#BDFFC3", mesesage: "Build succeded"
                         }
                     }
                 }
@@ -61,11 +63,8 @@ pipeline {
         stage('Report') {
             steps {
                 script {
-                    echo 'Deploying....'
-                    if (currentBuild.result == 'UNSTABLE'){
-                        currentBuild.result = 'FAILURE'
-                        slackSend (color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-                    }
+                    echo 'Generating report....'
+                    // Allure report goes re
                 }
             }
         }
