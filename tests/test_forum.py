@@ -1,5 +1,5 @@
 from pom.forum import Forum
-from pom.video_response import VideoReponse
+from utils.video_response import VideoReponse
 import logging
 import threading
 import time
