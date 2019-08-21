@@ -26,7 +26,7 @@ class TestForum:
 
     def run(self, driver):
         f = Forum(driver)
-        video_response = VideoReponse(driver)
+        video_response = VideoReponse()
 
         f.goto_youtube()
         f.goto_channel("step-in forum")
