@@ -60,30 +60,58 @@ class Forum:
         WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
 
     def sign_in(self):
-        time.sleep(3)
         quality_value_elem = self.driver.switch_to.active_element
-        if "Sign in to like videos" in quality_value_elem.text:
-            keyboard.press_and_release('esc')
+        while "Sign in to like videos" not in quality_value_elem.text:
+            quality_value_elem = self.driver.switch_to.active_element
+        keyboard.press_and_release('esc')
 
     def change_video_quality(self, quality_value: str):
-        settings_xpath = "//*[@id='movie_player']/div[21]/div[2]/div[2]/button[3]"
-        settings_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, settings_xpath)))
-        settings_elem.click()
+        def pause_play():
+            player_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button"
+            player_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, player_css)))
+            player_elem.click()
 
-        quality_xpath = "//*[@id='ytp-id-18']/div/div/div[3]/div[1]"
-        quality_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, quality_xpath)))
-        quality_elem.click()
+        def elem_operation_css(css_sel, click=False):
+            elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, css_sel)))
+            asd = None
+            if click:
+                asd = f"{elem.get_attribute('innerHTML')}"
+                # print(asd)
+                elem.click()
+            else:
+                return asd
+
+        self.driver.get('https://www.youtube.com/watch?v=ffUnNaQTfZE')
+        self.sign_in()
+
+        pause_play()
+
+        # skip_ad_css = '#skip-button\:s > span > button'
+
+        settings_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-button.ytp-settings-button"
+        elem_operation_css(settings_css, True)
+
+        quality_css = "#ytp-id-18 > div > div > div:nth-child(5) > div.ytp-menuitem-content"
+        elem_operation_css(quality_css, True)
 
         is_required_quality = False
         for i in range(6):
             keyboard.press_and_release('up')
+            time.sleep(0.5)
             quality_value_elem = self.driver.switch_to.active_element
             if quality_value == quality_value_elem.text:
                 is_required_quality = True
                 break
         if is_required_quality:
             keyboard.press_and_release('enter')
-            return True
+            pause_play()
+            time.sleep(2)
+
+        elem_operation_css(settings_css, True)
+
+        # current_quality_css = '#ytp-id-19 > div > div > div:nth-child(5) > div.ytp-menuitem-content > div > span'
+        # print(elem_operation_css(current_quality_css))
+        return True
 
     def get_up_next(self, video_title):
         """Return a dict of next videos"""
