@@ -17,3 +17,4 @@ wcwidth==0.1.7
 yapf==0.28.0
 zipp==0.5.2
 requests==2.22.0
+keyboard==0.13.3
