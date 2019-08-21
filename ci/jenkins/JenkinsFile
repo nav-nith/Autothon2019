@@ -25,7 +25,7 @@ pipeline {
                     post {
                         always {
                             junit "**/result*.xml"
-                            slackSend "Build completed for Web - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                            slackSend "Build completed for Web"
                         }
                     }
                 }
@@ -42,7 +42,7 @@ pipeline {
                     post {
                         always {
                             junit "**/result*.xml"
-                            slackSend "Build completed for Mobile - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                            slackSend "Build completed for Mobile"
                         }
                     }
                 }
@@ -51,6 +51,14 @@ pipeline {
         stage('Report') {
             steps {
                 echo 'Deploying....'
+                if (currentBuild.result == 'UNSTABLE'){
+                    currentBuild.result = 'FAILURE'
+                    slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                }
+            }
+        }
+        post {
+            always {
                 if (currentBuild.result == 'UNSTABLE'){
                     currentBuild.result = 'FAILURE'
                     slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
