@@ -71,6 +71,8 @@ def driver(request):
     is_mobile = request.config.getoption("--mobile")
     is_headless = request.config.getoption("--headless")
 
+    request.cls.is_mobile = is_mobile
+
     if is_mobile:
         mobile_driver = get_mobile_driver()
         yield mobile_driver

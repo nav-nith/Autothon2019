@@ -13,9 +13,10 @@ delay = 5
 
 
 class Forum:
-    def __init__(self, driver):
+    def __init__(self, driver, is_mobile):
         self.driver = driver
         self.video_title_elem = ""
+        self.is_mobile = is_mobile
 
     def goto_youtube(self):
         log.debug(f"Going to open YouTube")

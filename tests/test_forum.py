@@ -11,7 +11,7 @@ log.setLevel(logging.DEBUG)
 
 class TestForum:
     def test_run(self, driver):
-        f = Forum(driver)
+        f = Forum(driver, self.is_mobile)
         video_response = VideoReponse()
 
         f.goto_youtube()
