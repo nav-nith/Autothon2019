@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                slackResponse = slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 git (url:"git@github.com:nav-nith/Autothon2019.git", branch: "master", credentialsId: "navnith")
                 echo 'Building..'
             }
@@ -51,7 +51,7 @@ pipeline {
                 always {
                     if (currentBuild.result == 'UNSTABLE'){
                         currentBuild.result = 'FAILURE'
-                        slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                        slackSend (color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                     }
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
                 echo 'Deploying....'
                 if (currentBuild.result == 'UNSTABLE'){
                     currentBuild.result = 'FAILURE'
-                    slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                    slackSend (color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                 }
             }
         }
