@@ -13,14 +13,14 @@ delay = 5
 
 
 class Forum:
-    def __init__(self, driver):
+    def __init__(self, driver, is_mobile):
         self.driver = driver
         self.video_title_elem = ""
+        self.is_mobile = is_mobile
 
     def goto_youtube(self):
         log.debug(f"Going to open YouTube")
         self.driver.get("https://www.youtube.com")
-        pass
 
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
@@ -29,12 +29,10 @@ class Forum:
         self.driver.find_element_by_id("search-icon-legacy").click()
         channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
         channel_elem.click()
-        pass
 
     def goto_video_tab(self):
         videos_tab_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//div[@id='tabsContent']/paper-tab[2]/div")))
         videos_tab_elem.click()
-        pass
 
     def scroll_to_view(self, video_title):
         print(f"Title: {video_title}")
