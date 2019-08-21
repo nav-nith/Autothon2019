@@ -37,8 +37,6 @@ class VideoReponse:
         log.info(f"POST RESP: {r.status_code}")
         hash_key = r.content.decode()
         log.info(f"Hash Key: {hash_key}")
-        log.info(f"Deleting Json File")
-        assert os.remove('results.json')
         return hash_key
 
     def get_result(self, hash_key: str):
