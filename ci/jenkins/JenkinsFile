@@ -1,10 +1,11 @@
+def slackResponse
 pipeline {
     agent any 
 
     stages {
         stage('Build') {
             steps {
-                slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
+                slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 git (url:"git@github.com:nav-nith/Autothon2019.git", branch: "master", credentialsId: "navnith")
                 echo 'Building..'
             }
@@ -17,8 +18,15 @@ pipeline {
                     }
                     steps {
                         echo 'Testing Web'
+                        slackSend "Build Started for Web- ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
                         bat "pip install -r requirements.txt"
                         bat "pytest -sv -ra tests/test_forum.py --junitxml=results/junit/result.xml"
+                    }
+                    post {
+                        always {
+                            junit testResults: "**/result*.xml", allowEmptyResults: true
+                            slackSend "Build completed for Web"
+                        }
                     }
                 }
                 stage('Mobile') {
@@ -27,15 +35,37 @@ pipeline {
                     }
                     steps {
                         echo 'Testing Mobile..'
+                        slackSend "Build Started for Mobile- ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
                         bat "pip install -r requirements.txt"
                         bat "pytest -sv -ra tests/test_forum.py --mobile --junitxml=results/junit/result_m.xml"
+                    }
+                    post {
+                        always {
+                            junit testResults: "**/result*.xml", allowEmptyResults: true
+                            slackSend "Build completed for Mobile"
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    script {
+                        if (currentBuild.result == 'UNSTABLE'){
+                            currentBuild.result = 'FAILURE'
+                            slackSend (color: "#FF9FA1", message: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                        } else {
+                            slackSend (color: "#BDFFC3", message: "Build succeded")
+                        }
                     }
                 }
             }
         }
-        stage('Deploy') {
+        stage('Report') {
             steps {
-                echo 'Deploying....'
+                script {
+                    echo 'Generating report....'
+                    // Allure report goes re
+                }
             }
         }
     }
