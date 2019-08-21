@@ -31,7 +31,7 @@ def chrome_driver():
     log.info("initiating chrome driver in web browzer")
 
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
 
     chrome_driver = selenium_webdriver.Chrome(options=chrome_options)
     chrome_driver.maximize_window()
@@ -51,7 +51,7 @@ def mobile_driver():
     desired_caps['autoGrantPermissions'] = 'True'
     desired_caps['autoDismissAlerts'] = 'True'
     desired_caps['noReset'] = 'True'
-    # desired_caps['chromedriverExecutable'] = 'chrome'
+    desired_caps['chromedriverExecutable'] = 'C:\\pradeep\\chromedriver.exe'
     desired_caps['browserName'] = 'Chrome'
 
     mobile_driver = appium_webdriver.Remote(f'http://{APPIUM_HOST}:{APPIUM_PORT}/wd/hub', desired_caps)
