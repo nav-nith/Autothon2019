@@ -2,6 +2,7 @@ import logging
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 log = logging.getLogger("FORUM")
@@ -12,6 +13,7 @@ delay = 10
 class Forum:
     def __init__(self, driver):
         self.driver = driver
+        self.video_title_elem = ""
 
     def goto_youtube(self):
         log.debug(f"Going to open YouTube")
@@ -36,9 +38,13 @@ class Forum:
         pass
 
     def scroll_to_view(self, video_title):
+        self.video_title_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']")))
+        ActionChains(self.driver).move_to_element(self.video_title_elem).perform()
         pass
 
     def play_video(self):
+        self.video_title_elem.click()
+        WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
         pass
 
     def change_video_quality(self):
