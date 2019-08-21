@@ -4,18 +4,33 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
                 git (url:"git@github.com:nav-nith/Autothon2019.git", branch: "master", credentialsId: "navnith")
                 echo 'Building..'
             }
         }
-        stage('Test') {
-            agent {
-                label "Slave1_Win10"
-            }
-            steps {
-                    echo 'Testing..'
-                    bat "pip install -r requirements.txt"
-                    bat "pytest -sv -ra tests\test_forum.py --junitxml=results/junit/result.xml"
+        stage('Run Tests'){
+            parallel {                    
+                stage('Browser') {
+                    agent {
+                        label "Slave2_Win10"
+                    }
+                    steps {
+                        echo 'Testing Web'
+                        bat "pip install -r requirements.txt"
+                        bat "pytest -sv -ra tests/test_forum.py --junitxml=results/junit/result.xml"
+                    }
+                }
+                stage('Mobile') {
+                    agent {
+                        label "Slave1_Win10"
+                    }
+                    steps {
+                        echo 'Testing Mobile..'
+                        bat "pip install -r requirements.txt"
+                        bat "pytest -sv -ra tests/test_forum.py --mobile --junitxml=results/junit/result_m.xml"
+                    }
+                }
             }
         }
         stage('Deploy') {
