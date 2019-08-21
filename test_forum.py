@@ -43,4 +43,6 @@ class TestForum:
         f.change_video_quality('360p')
         videos_up_next = f.get_up_next(video_title)
 
-        video_response.upload_up_next(videos_up_next)
+        hash_key = video_response.upload_up_next(videos_up_next)
+        res = video_response.get_result(hash_key)
+        print(f"RESPONSE: {res}")
