@@ -54,7 +54,7 @@ pipeline {
                             currentBuild.result = 'FAILURE'
                             slackSend (color: "#FF9FA1", mesesage: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
                         } else {
-                            slackSend (color: "#BDFFC3", mesesage: "Build succeded"
+                            slackSend (color: "#BDFFC3", mesesage: "Build succeded")
                         }
                     }
                 }
