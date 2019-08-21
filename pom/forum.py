@@ -95,7 +95,7 @@ class Forum:
 
         video_list = self.driver.find_elements_by_css_selector("#items #video-title")
         for video in video_list:
-            if not video.text:
+            if video.text:
                 d["upcoming-videos"].append(video.text)
 
         return d
