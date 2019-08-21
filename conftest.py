@@ -19,38 +19,36 @@ APPIUM_PORT = 4723
 
 def pytest_addoption(parser):
     parser.addoption("--headless", action="store_true", default=False, help="Add for headless browser")
+    parser.addoption("--mobile", action="store_true", default=False, help="Run on mobile. Default: run on desktop")
 
 
-@pytest.fixture(scope="class")
-def appium():
-    appium = AppiumService()
+# @pytest.fixture(scope="class")
+# def appium():
+#     appium = AppiumService()
 
-    log.debug(f"Starting Appium Server")
-    appium.start(args=['--address', APPIUM_HOST, '-p', str(APPIUM_PORT)])
+#     log.debug(f"Starting Appium Server")
+#     appium.start(args=['--address', APPIUM_HOST, '-p', str(APPIUM_PORT)])
 
-    yield
+#     yield
 
-    log.debug(f"Stopping Appium Server")
-    appium.stop()
+#     log.debug(f"Stopping Appium Server")
+#     appium.stop()
 
 
-@pytest.fixture(scope="class")
-def chrome_driver(request):
+def get_chrome_driver(is_headless):
     log.info("initiating chrome driver in web browzer")
 
     chrome_options = Options()
-    if request.config.getoption("--headless"):
+    if is_headless:
         chrome_options.add_argument("--headless")
 
     chrome_driver = selenium_webdriver.Chrome(DESKTOP_CHROMEDRIVER_PATH, options=chrome_options)
     chrome_driver.maximize_window()
 
-    yield chrome_driver
+    return chrome_driver
 
-    chrome_driver.close()
 
-@pytest.fixture(scope="class")
-def mobile_driver():
+def get_mobile_driver():
     log.info("initiating chrome driver in mobile browzer")
     
     desired_caps = dict()
@@ -65,6 +63,19 @@ def mobile_driver():
 
     mobile_driver = appium_webdriver.Remote(f'http://{APPIUM_HOST}:{APPIUM_PORT}/wd/hub', desired_caps)
 
-    yield mobile_driver
+    return mobile_driver
 
-    mobile_driver.close()
+
+@pytest.fixture(scope="class")
+def driver(request):
+    is_mobile = request.config.getoption("--mobile")
+    is_headless = request.config.getoption("--headless")
+
+    if is_mobile:
+        mobile_driver = get_mobile_driver()
+        yield mobile_driver
+        mobile_driver.close()
+    else:
+        chrome_driver = get_chrome_driver(is_headless)
+        yield chrome_driver
+        chrome_driver.close()

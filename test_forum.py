@@ -10,21 +10,7 @@ log.setLevel(logging.DEBUG)
 
 
 class TestForum:
-    def test_base(self, chrome_driver):
-        # mobile_thread = threading.Thread(target=self.run, args=(mobile_driver,))
-        browser_thread = threading.Thread(target=self.run, args=(chrome_driver,))
-
-        log.debug(f"Starting mobile test...")
-        # mobile_thread.start()
-        log.debug(f"Starting chrome test...")
-        browser_thread.start()
-
-        log.debug("Joining mobile thread...")
-        # mobile_thread.join()
-        log.debug("Joining browser thread...")
-        browser_thread.join()
-
-    def run(self, driver):
+    def test_run(self, driver):
         f = Forum(driver)
         video_response = VideoReponse()
 
