@@ -1,0 +1,27 @@
+@startuml
+title Class Diagram
+class Forum {
+    driver: chromedriver/WebDriver
+    goto_youtube()
+    goto_channel()
+    goto_video_tab()
+    get_up_next()
+    ...()
+}
+
+class VideoResponse {
+    url: LAB URL
+    get_video_title()
+    upload_up_next()
+    get_result()
+}
+
+class TestForum {
+    forum: Forum
+    response: VideoResponse
+}
+
+TestForum *-- Forum
+TestForum *-- VideoResponse
+
+@enduml
