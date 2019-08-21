@@ -4,6 +4,10 @@ from appium import webdriver as appium_webdriver
 from selenium import webdriver as selenium_webdriver
 from appium.webdriver.appium_service import AppiumService
 from selenium.webdriver.chrome.options import Options
+import os
+
+MOBILE_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedriver_mobile_74.exe")
+DESKTOP_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedriver_desktop_76.exe")
 
 log = logging.getLogger("CONFTEST")
 log.setLevel(logging.DEBUG)
@@ -11,6 +15,10 @@ log.setLevel(logging.DEBUG)
 
 APPIUM_HOST = "localhost"
 APPIUM_PORT = 4723
+
+
+def pytest_addoption(parser):
+    parser.addoption("--headless", action="store_true", default=False, help="Add for headless browser")
 
 
 @pytest.fixture(scope="class")
@@ -27,13 +35,14 @@ def appium():
 
 
 @pytest.fixture(scope="class")
-def chrome_driver():
+def chrome_driver(request):
     log.info("initiating chrome driver in web browzer")
 
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    if request.config.getoption("--headless"):
+        chrome_options.add_argument("--headless")
 
-    chrome_driver = selenium_webdriver.Chrome("C:\\pradeep\\chromedriver.exe", options=chrome_options)
+    chrome_driver = selenium_webdriver.Chrome(DESKTOP_CHROMEDRIVER_PATH, options=chrome_options)
     chrome_driver.maximize_window()
 
     yield chrome_driver
@@ -51,7 +60,7 @@ def mobile_driver():
     desired_caps['autoGrantPermissions'] = 'True'
     desired_caps['autoDismissAlerts'] = 'True'
     desired_caps['noReset'] = 'True'
-    desired_caps['chromedriverExecutable'] = 'C:\\pradeep\\chromedriver.exe'
+    desired_caps['chromedriverExecutable'] = MOBILE_CHROMEDRIVER_PATH
     desired_caps['browserName'] = 'Chrome'
 
     mobile_driver = appium_webdriver.Remote(f'http://{APPIUM_HOST}:{APPIUM_PORT}/wd/hub', desired_caps)
