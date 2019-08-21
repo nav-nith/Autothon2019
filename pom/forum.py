@@ -71,17 +71,16 @@ class Forum:
 
         def elem_operation_css(css_sel, click=False):
             elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, css_sel)))
-            asd = None
+            asd = f"{elem.get_attribute('innerHTML')}"
             if click:
-                asd = f"{elem.get_attribute('innerHTML')}"
-                # print(asd)
                 elem.click()
             else:
                 return asd
 
-        pause_play()
+        self.driver.get("https://www.youtube.com/watch?v=ffUnNaQTfZE")
+        self.sign_in()
 
-        # skip_ad_css = '#skip-button\:s > span > button'
+        pause_play()
 
         settings_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-button.ytp-settings-button"
         elem_operation_css(settings_css, True)
@@ -103,10 +102,7 @@ class Forum:
             time.sleep(2)
 
         elem_operation_css(settings_css, True)
-
-        # current_quality_css = '#ytp-id-19 > div > div > div:nth-child(5) > div.ytp-menuitem-content > div > span'
-        # print(elem_operation_css(current_quality_css))
-        return True
+        return quality_value in elem_operation_css(quality_css)
 
     def get_up_next(self, video_title):
         """Return a dict of next videos"""
