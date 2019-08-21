@@ -3,6 +3,7 @@ from utils.video_response import VideoReponse
 import logging
 import threading
 import time
+import json
 
 
 log = logging.getLogger("TEST")
@@ -31,4 +32,7 @@ class TestForum:
 
         hash_key = video_response.upload_up_next(videos_up_next)
         res = video_response.get_result(hash_key)
+        res = json.loads(res)
         print(f"RESPONSE: {res}")
+        assert "upcoming-videos" in res, "Problem getting data from YouTube for 'Up Next'"
+        assert res["upcoming-videos"], "Cannot get any vides in 'Up Next'"
