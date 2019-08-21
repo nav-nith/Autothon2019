@@ -20,7 +20,10 @@ class Forum:
 
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
-        channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
+        search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.NAME, 'search_query')))
+        search_elem.send_keys(channel_name)
+        self.driver.find_element_by_id("search-icon-legacy").click()
+        channel_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
         channel_elem.click()
         pass
 
@@ -30,9 +33,6 @@ class Forum:
         pass
 
     def search_for(self, video_title):
-        search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.NAME, 'search_query')))
-        search_elem.send_keys(video_title)
-        self.driver.find_element_by_id("search-icon-legacy").click()
         pass
 
     def scroll_to_view(self, video_title):
