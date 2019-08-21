@@ -40,7 +40,7 @@ class TestForum:
 
         f.play_video()
 
-        f.change_video_quality()
+        assert f.change_video_quality('360p')
         videos_up_next = f.get_up_next()
 
         video_response.upload_up_next(videos_up_next)

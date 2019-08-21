@@ -67,7 +67,7 @@ class Forum:
         if "Sign in to like videos" in quality_value_elem.text:
             keyboard.press_and_release('esc')
 
-    def change_video_quality(self):
+    def change_video_quality(self, quality_value: str):
         settings_xpath = "//*[@id='movie_player']/div[21]/div[2]/div[2]/button[3]"
         settings_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, settings_xpath)))
         settings_elem.click()
@@ -76,14 +76,14 @@ class Forum:
         quality_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, quality_xpath)))
         quality_elem.click()
 
-        is360 = False
-        for i in range(5):
+        is_required_quality = False
+        for i in range(6):
             keyboard.press_and_release('up')
             quality_value_elem = self.driver.switch_to.active_element
-            if "360p" == quality_value_elem.text:
-                is360 = True
+            if quality_value == quality_value_elem.text:
+                is_required_quality = True
                 break
-        if is360:
+        if is_required_quality:
             keyboard.press_and_release('enter')
             return True
 
