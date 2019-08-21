@@ -1,5 +1,5 @@
-from pom.forum import Forum
-from pom.video_response import VideoReponse
+from .pom.forum import Forum
+from .pom.video_response import VideoReponse
 import logging
 import threading
 import time
@@ -18,6 +18,10 @@ class TestForum:
         mobile_thread.start()
         log.debug(f"Starting chrome test...")
         browser_thread.start()
+        Forum.goto_youtube(chrome_driver)
+        Forum.search_for("step-inforum")
+        Forum.goto_channel()
+        Forum.goto_video_tab()
 
         log.debug("Joining mobile thread...")
         mobile_thread.join()
