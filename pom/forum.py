@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+import keyboard
 
 
 log = logging.getLogger("FORUM")
@@ -58,8 +59,31 @@ class Forum:
         self.video_title_elem.click()
         WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
 
-    def change_video_quality(self):
-        pass
+    def sign_in(self):
+        time.sleep(3)
+        quality_value_elem = self.driver.switch_to.active_element
+        if "Sign in to like videos" in quality_value_elem.text:
+            keyboard.press_and_release('esc')
+
+    def change_video_quality(self, quality_value: str):
+        settings_xpath = "//*[@id='movie_player']/div[21]/div[2]/div[2]/button[3]"
+        settings_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, settings_xpath)))
+        settings_elem.click()
+
+        quality_xpath = "//*[@id='ytp-id-18']/div/div/div[3]/div[1]"
+        quality_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, quality_xpath)))
+        quality_elem.click()
+
+        is_required_quality = False
+        for i in range(6):
+            keyboard.press_and_release('up')
+            quality_value_elem = self.driver.switch_to.active_element
+            if quality_value == quality_value_elem.text:
+                is_required_quality = True
+                break
+        if is_required_quality:
+            keyboard.press_and_release('enter')
+            return True
 
     def get_up_next(self):
         """Return a dict of next videos"""
