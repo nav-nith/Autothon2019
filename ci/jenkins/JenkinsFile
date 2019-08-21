@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                git "git@github.com:nav-nith/Autothon2019.git"
+                git (url:"git@github.com:nav-nith/Autothon2019.git", branch: "master", credentialsId: "navnith")
                 echo 'Building..'
             }
         }
