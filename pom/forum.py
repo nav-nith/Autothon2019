@@ -77,9 +77,6 @@ class Forum:
             else:
                 return asd
 
-        self.driver.get("https://www.youtube.com/watch?v=ffUnNaQTfZE")
-        self.sign_in()
-
         pause_play()
 
         settings_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-button.ytp-settings-button"
