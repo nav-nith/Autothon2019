@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Test') {
             agent {
-                agent "Slave1_Win10"
+                label "Slave1_Win10"
             }
             steps {
                     echo 'Testing..'
