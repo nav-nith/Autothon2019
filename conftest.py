@@ -3,7 +3,7 @@ import logging
 from appium import webdriver as appium_webdriver
 from selenium import webdriver as selenium_webdriver
 from appium.webdriver.appium_service import AppiumService
-
+from selenium.webdriver.chrome.options import Options
 
 log = logging.getLogger("CONFTEST")
 log.setLevel(logging.DEBUG)
@@ -26,7 +26,10 @@ def appium():
 def chrome_driver():
     log.info("initiating chrome driver in web browzer")
 
-    chrome_driver = selenium_webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+
+    chrome_driver = selenium_webdriver.Chrome(options=chrome_options)
     chrome_driver.maximize_window()
 
     yield chrome_driver
@@ -39,8 +42,8 @@ def mobile_driver():
     
     desired_caps = dict()
     desired_caps['platformName'] = 'Android'
-    desired_caps['platformVersion'] = 'Auto'
-    desired_caps['deviceName'] = 'Auto'
+    desired_caps['platformVersion'] = '9.0'
+    desired_caps['deviceName'] = 'emulator-5554'
     desired_caps['autoGrantPermissions'] = 'True'
     desired_caps['autoDismissAlerts'] = 'True'
     desired_caps['noReset'] = 'True'
