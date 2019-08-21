@@ -24,14 +24,24 @@ class Forum:
 
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
-        search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.NAME, 'search_query')))
-        search_elem.send_keys(channel_name)
-        self.driver.find_element_by_id("search-icon-legacy").click()
-        channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
-        channel_elem.click()
+        if self.is_mobile:
+            self.driver.find_element_by_id("[aria-label=‘Search YouTube’]").click()
+            search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '.searchbox-input')))
+            search_elem.send_keys(channel_name)
+            self.driver.find_element_by_id("[aria-label=‘Search YouTube’]").click()
+            channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, '//h4[text()="STep-IN Forum"')))
+            channel_elem.click()
+
+        else:
+            search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.NAME, 'search_query')))
+            search_elem.send_keys(channel_name)
+            self.driver.find_element_by_id("search-icon-legacy").click()
+            channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
+            channel_elem.click()
 
     def goto_video_tab(self):
-        videos_tab_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//div[@id='tabsContent']/paper-tab[2]/div")))
+        video_tab_locator = '//a[text()="Videos"]' if self.is_mobile else "//div[@id='tabsContent']/paper-tab[2]/div"
+        videos_tab_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, video_tab_locator)))
         videos_tab_elem.click()
 
     def scroll_to_view(self, video_title):
@@ -55,7 +65,8 @@ class Forum:
 
     def play_video(self):
         self.video_title_elem.click()
-        WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
+        youtube_video_title_locator = '.slim-video-metadata-title' if self.is_mobile else '#info-contents .title'
+        WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, youtube_video_title_locator)))
 
     def sign_in(self):
         quality_value_elem = self.driver.switch_to.active_element
@@ -112,7 +123,8 @@ class Forum:
             "upcoming-videos": []
         }
 
-        video_list = self.driver.find_elements_by_css_selector("#items #video-title")
+        up_next_video_elems = '.item .compact-media-item-headline' if self.is_mobile else "#items #video-title"
+        video_list = self.driver.find_elements_by_css_selector(up_next_video_elems)
         for video in video_list:
             if video.text:
                 d["upcoming-videos"].append(video.text)
