@@ -47,18 +47,18 @@ pipeline {
                     }
                 }
             }
+            post {
+                always {
+                    if (currentBuild.result == 'UNSTABLE'){
+                        currentBuild.result = 'FAILURE'
+                        slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+                    }
+                }
+            }
         }
         stage('Report') {
             steps {
                 echo 'Deploying....'
-                if (currentBuild.result == 'UNSTABLE'){
-                    currentBuild.result = 'FAILURE'
-                    slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-                }
-            }
-        }
-        post {
-            always {
                 if (currentBuild.result == 'UNSTABLE'){
                     currentBuild.result = 'FAILURE'
                     slackSend (channel: slackResponse.threadId, color: "#FF9FA1", mesesag: "Build failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
