@@ -31,7 +31,7 @@ def chrome_driver():
     log.info("initiating chrome driver in web browzer")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
 
     chrome_driver = selenium_webdriver.Chrome("C:\\pradeep\\chromedriver.exe", options=chrome_options)
     chrome_driver.maximize_window()
