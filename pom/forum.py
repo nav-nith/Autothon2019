@@ -87,6 +87,11 @@ class Forum:
 
     def get_up_next(self):
         """Return a dict of next videos"""
-        video_list = self.driver.find_elements_by_id("video-title")
+        # d = {
+        #     "team": "sony-team",
+        #     "video": 
+        # }
+        video_list = self.driver.find_elements_by_css_selector("#items #video-title")
         for video in video_list:
+
             print(video.text)
