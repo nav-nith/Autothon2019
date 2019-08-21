@@ -25,10 +25,10 @@ class Forum:
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
         if self.is_mobile:
-            self.driver.find_element_by_id("[aria-label=‘Search YouTube’]").click()
+            self.driver.find_elements_by_css_selector("[aria-label=‘Search YouTube’]").click()
             search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '.searchbox-input')))
             search_elem.send_keys(channel_name)
-            self.driver.find_element_by_id("[aria-label=‘Search YouTube’]").click()
+            self.driver.find_elements_by_css_selector("[aria-label=‘Search YouTube’]").click()
             channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, '//h4[text()="STep-IN Forum"')))
             channel_elem.click()
 
