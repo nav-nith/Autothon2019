@@ -10,9 +10,9 @@ log.setLevel(logging.DEBUG)
 
 
 class TestForum:
-    def test_base(self, mobile_driver, chrome_driver):
-        mobile_thread = threading.Thread(thread=run, args=(mobile_driver,))
-        browser_thread = threading.Thread(thread=run, args=(chrome_driver,))
+    def test_base(self, appium, mobile_driver, chrome_driver):
+        mobile_thread = threading.Thread(target=self.run, args=(mobile_driver,))
+        browser_thread = threading.Thread(target=self.run, args=(chrome_driver,))
 
         log.debug(f"Starting mobile test...")
         mobile_thread.start()
