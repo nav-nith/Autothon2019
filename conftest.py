@@ -1,16 +1,14 @@
 import pytest
 import logging
-from appium import webdriver
+from appium import webdriver as appium_webdriver
+from selenium import webdriver as selenium_webdriver
 
 
 @pytest.fixture(scope="class")
 def chrome_driver():
     logging.info("initiating chrome driver in web browzer")
 
-    desired_caps = dict()
-    desired_caps['browserName'] = 'Chrome'
-
-    chrome_driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+    chrome_driver = selenium_webdriver.Chrome()
     chrome_driver.maximize_window()
 
     yield chrome_driver
@@ -31,7 +29,7 @@ def mobile_driver():
     # desired_caps['chromedriverExecutable'] = 'chrome'
     desired_caps['browserName'] = 'Chrome'
 
-    mobile_driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+    mobile_driver = appium_webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
     yield mobile_driver
 
