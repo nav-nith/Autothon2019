@@ -79,9 +79,6 @@ class Forum:
             else:
                 return asd
 
-        self.driver.get('https://www.youtube.com/watch?v=ffUnNaQTfZE')
-        self.sign_in()
-
         pause_play()
 
         # skip_ad_css = '#skip-button\:s > span > button'
