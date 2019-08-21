@@ -1,21 +1,56 @@
 import pytest
-from selenium import webdriver
+import logging
+from appium import webdriver
+from appium.webdriver.appium_service import AppiumService
+
+
+log = logging.getLogger("CONFTEST")
+log.setLevel(logging.DEBUG)
+
+
+@pytest.fixture
+def appium():
+    appium = AppiumService()
+
+    log.debug(f"Starting Appium Server")
+    appium.start()
+
+    yield
+
+    log.debug(f"Stopping Appium Server")
+    appium.stop()
 
 
 @pytest.fixture(scope="class")
 def chrome_driver():
-    print("initiating chrome driver")
-    driver = webdriver.Chrome()
-    driver.maximize_window()
+    log.info("initiating chrome driver in web browzer")
 
-    yield driver
-    driver.close()
+    desired_caps = dict()
+    desired_caps['browserName'] = 'Chrome'
+
+    chrome_driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+    chrome_driver.maximize_window()
+
+    yield chrome_driver
+
+    chrome_driver.close()
 
 @pytest.fixture(scope="class")
-def firefox_driver():
-    print("initiating firefox driver")
-    driver = webdriver.Firefox()
-    driver.maximize_window()
+def mobile_driver():
+    log.info("initiating chrome driver in mobile browzer")
+    
+    desired_caps = dict()
+    desired_caps['platformName'] = 'Android'
+    desired_caps['platformVersion'] = 'Auto'
+    desired_caps['deviceName'] = 'Auto'
+    desired_caps['autoGrantPermissions'] = 'True'
+    desired_caps['autoDismissAlerts'] = 'True'
+    desired_caps['noReset'] = 'True'
+    # desired_caps['chromedriverExecutable'] = 'chrome'
+    desired_caps['browserName'] = 'Chrome'
 
-    yield driver
-    driver.close()
+    mobile_driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+
+    yield mobile_driver
+
+    mobile_driver.close()
