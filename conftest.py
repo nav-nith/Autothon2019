@@ -2,11 +2,29 @@ import pytest
 import logging
 from appium import webdriver as appium_webdriver
 from selenium import webdriver as selenium_webdriver
+from appium.webdriver.appium_service import AppiumService
+
+
+log = logging.getLogger("CONFTEST")
+log.setLevel(logging.DEBUG)
+
+
+@pytest.fixture
+def appium():
+    appium = AppiumService()
+
+    log.debug(f"Starting Appium Server")
+    appium.start()
+
+    yield
+
+    log.debug(f"Stopping Appium Server")
+    appium.stop()
 
 
 @pytest.fixture(scope="class")
 def chrome_driver():
-    logging.info("initiating chrome driver in web browzer")
+    log.info("initiating chrome driver in web browzer")
 
     chrome_driver = selenium_webdriver.Chrome()
     chrome_driver.maximize_window()
@@ -17,7 +35,7 @@ def chrome_driver():
 
 @pytest.fixture(scope="class")
 def mobile_driver():
-    logging.info("initiating chrome driver in mobile browzer")
+    log.info("initiating chrome driver in mobile browzer")
     
     desired_caps = dict()
     desired_caps['platformName'] = 'Android'
