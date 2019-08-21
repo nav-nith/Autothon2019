@@ -8,20 +8,35 @@ pipeline {
                 echo 'Building..'
             }
         }
-        stage('Test') {
-            agent {
-                label "Slave1_Win10"
-            }
-            steps {
-                    echo 'Testing..'
-                    bat "pip install -r requirements.txt"
-                    bat "pytest -sv -ra tests\test_forum.py --junitxml=results/junit/result.xml"
+        stage('Run Test'){
+            parallel {                    
+                stage('Browser') {
+                    agent {
+                        label "Slave1_Win10"
+                    }
+                    steps {
+                        echo 'Testing..'
+                        // bat "pip install -r requirements.txt"
+                        bat "pytest -sv -ra tests\test_forum.py --junitxml=results/junit/result.xml"
+                    }
+                }
+                stage('Mobile') {
+                    agent {
+                        label "Slave1_Win10"
+                    }
+                    steps {
+                        echo 'Testing..'
+                        // bat "pip install -r requirements.txt"
+                        bat "pytest -sv -ra tests\test_forum.py --junitxml=results/junit/result_m.xml"
+                    }
+                }
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
             }
+           }
         }
     }
-}
+    }
