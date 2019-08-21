@@ -6,8 +6,8 @@ from appium.webdriver.appium_service import AppiumService
 from selenium.webdriver.chrome.options import Options
 import os
 
-MOBILE_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedriver_mobile_74.exe")
-DESKTOP_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedriver_desktop_76.exe")
+MOBILE_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedrivers", "chromedriver_mobile_74.exe")
+DESKTOP_CHROMEDRIVER_PATH = os.path.join(os.getcwd(), "chromedrivers", "chromedriver_desktop_76.exe")
 
 log = logging.getLogger("CONFTEST")
 log.setLevel(logging.DEBUG)
