@@ -85,13 +85,17 @@ class Forum:
             keyboard.press_and_release('enter')
             return True
 
-    def get_up_next(self):
+    def get_up_next(self, video_title):
         """Return a dict of next videos"""
-        # d = {
-        #     "team": "sony-team",
-        #     "video": 
-        # }
+        d = {
+            "team": "sony-team",
+            "video": video_title,
+            "upcoming-videos": []
+        }
+
         video_list = self.driver.find_elements_by_css_selector("#items #video-title")
         for video in video_list:
+            if not video.text:
+                d["upcoming-videos"].append(video.text)
 
-            print(video.text)
+        return d
