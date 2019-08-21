@@ -10,17 +10,17 @@ log.setLevel(logging.DEBUG)
 
 
 class TestForum:
-    def test_base(self, mobile_driver, chrome_driver):
-        mobile_thread = threading.Thread(target=self.run, args=(mobile_driver,))
+    def test_base(self, chrome_driver):
+        # mobile_thread = threading.Thread(target=self.run, args=(mobile_driver,))
         browser_thread = threading.Thread(target=self.run, args=(chrome_driver,))
 
         log.debug(f"Starting mobile test...")
-        mobile_thread.start()
+        # mobile_thread.start()
         log.debug(f"Starting chrome test...")
         browser_thread.start()
 
         log.debug("Joining mobile thread...")
-        mobile_thread.join()
+        # mobile_thread.join()
         log.debug("Joining browser thread...")
         browser_thread.join()
 
@@ -34,7 +34,6 @@ class TestForum:
 
         video_title = video_response.get_video_title()
 
-        f.search_for(video_title)
         f.scroll_to_view(video_title)
 
         driver.get_screenshot_as_file(f"screenshot_{time.strftime('%Y%m%d-%H%M%S')}.png")
