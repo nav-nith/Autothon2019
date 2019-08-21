@@ -39,30 +39,30 @@ class Forum:
         print(f"Title: {video_title}")
         assert video_title, "Video title is empty!"
         y = 0
-        for index in range(20):
+        end = 30
+        for index in range(end):
             try:
-                self.video_title_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']/..")))
+                self.video_title_elem = WebDriverWait(self.driver, 1).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']/..")))
             except Exception:
                 print("Scrolling..")
                 y += 500
                 self.driver.execute_script(f"window.scrollTo(0, {y})")
-                if index == 19:
+                if index == (end - 1):
                     raise
             else:
                 break
 
         ActionChains(self.driver).move_to_element(self.video_title_elem).perform()
-        pass
 
     def play_video(self):
         self.video_title_elem.click()
         WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
-        time.sleep(20)
-        pass
 
     def change_video_quality(self):
         pass
 
     def get_up_next(self):
         """Return a dict of next videos"""
-        pass
+        video_list = self.driver.find_elements_by_id("video-title")
+        for video in video_list:
+            print(video.text)
