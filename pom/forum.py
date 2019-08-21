@@ -25,11 +25,12 @@ class Forum:
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
         if self.is_mobile:
-            self.driver.find_elements_by_css_selector("[aria-label=‘Search YouTube’]").click()
+            search_icon_locator = ".non-search-mode [aria-label='Search YouTube']"
+            self.driver.find_element_by_css_selector(search_icon_locator).click()
             search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '.searchbox-input')))
             search_elem.send_keys(channel_name)
-            self.driver.find_elements_by_css_selector("[aria-label=‘Search YouTube’]").click()
-            channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, '//h4[text()="STep-IN Forum"')))
+            self.driver.find_element_by_css_selector("[aria-label='Search YouTube']").click()
+            channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//a[@href='/user/stepinforum']/h4")))
             channel_elem.click()
 
         else:
@@ -47,11 +48,12 @@ class Forum:
     def scroll_to_view(self, video_title):
         print(f"Title: {video_title}")
         assert video_title, "Video title is empty!"
+        video_tile_locator = "//a/h4[text()='"+video_title+"']" if self.is_mobile else "//a[text()='"+video_title+"']/.."
         y = 0
         end = 30
         for index in range(end):
             try:
-                self.video_title_elem = WebDriverWait(self.driver, 1).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']/..")))
+                self.video_title_elem = WebDriverWait(self.driver, 1).until(ec.presence_of_element_located((By.XPATH, video_tile_locator)))
             except Exception:
                 print("Scrolling..")
                 y += 500
@@ -75,6 +77,8 @@ class Forum:
         keyboard.press_and_release('esc')
 
     def change_video_quality(self, quality_value: str):
+        if self.is_mobile:
+            return
         def pause_play():
             player_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button"
             player_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, player_css)))
