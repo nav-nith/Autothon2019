@@ -15,7 +15,7 @@ pipeline {
             steps {
                     echo 'Testing..'
                     bat "pip install -r requirements.txt"
-                    bat "pytest -sv -ra test_forum.py --junitxml=results/junit/result.xml"
+                    bat "pytest -sv -ra tests\test_forum.py --junitxml=results/junit/result.xml"
             }
         }
         stage('Deploy') {
