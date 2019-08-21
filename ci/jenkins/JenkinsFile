@@ -15,18 +15,18 @@ pipeline {
                         label "Slave1_Win10"
                     }
                     steps {
-                        echo 'Testing..'
-                        // bat "pip install -r requirements.txt"
+                        echo 'Testing Web'
+                        bat "pip install -r requirements.txt"
                         bat "pytest -sv -ra tests/test_forum.py --junitxml=results/junit/result.xml"
                     }
                 }
                 stage('Mobile') {
                     agent {
-                        label "Slave1_Win10"
+                        label "Slave2_Win10"
                     }
                     steps {
-                        echo 'Testing..'
-                        // bat "pip install -r requirements.txt"
+                        echo 'Testing Mobile..'
+                        bat "pip install -r requirements.txt"
                         bat "pytest -sv -ra tests/test_forum.py --mobile --junitxml=results/junit/result_m.xml"
                     }
                 }
