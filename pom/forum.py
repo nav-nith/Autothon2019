@@ -25,26 +25,25 @@ class Forum:
         search_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.NAME, 'search_query')))
         search_elem.send_keys(channel_name)
         self.driver.find_element_by_id("search-icon-legacy").click()
-        channel_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
+        channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
         channel_elem.click()
         pass
 
     def goto_video_tab(self):
-        videos_tab_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.XPATH, "//div[@id='tabsContent']/paper-tab[2]/div")))
+        videos_tab_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//div[@id='tabsContent']/paper-tab[2]/div")))
         videos_tab_elem.click()
         pass
 
-    def search_for(self, video_title):
-        pass
-
     def scroll_to_view(self, video_title):
-        self.video_title_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']")))
+        print(f"Title: {video_title}")
+        assert video_title, "Video title is empty!"
+        self.video_title_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.XPATH, "//a[text()='"+video_title+"']")))
         ActionChains(self.driver).move_to_element(self.video_title_elem).perform()
         pass
 
     def play_video(self):
         self.video_title_elem.click()
-        WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
+        WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, '#info-contents .title')))
         pass
 
     def change_video_quality(self):
