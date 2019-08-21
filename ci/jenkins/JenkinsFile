@@ -12,7 +12,7 @@ pipeline {
             parallel {                    
                 stage('Browser') {
                     agent {
-                        label "Slave1_Win10"
+                        label "Slave2_Win10"
                     }
                     steps {
                         echo 'Testing Web'
@@ -22,7 +22,7 @@ pipeline {
                 }
                 stage('Mobile') {
                     agent {
-                        label "Slave2_Win10"
+                        label "Slave1_Win10"
                     }
                     steps {
                         echo 'Testing Mobile..'
