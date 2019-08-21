@@ -25,8 +25,8 @@ class TestForum:
         browser_thread.join()
 
     def run(self, driver):
-        f = Forum()
-        video_response = VideoReponse()
+        f = Forum(driver)
+        video_response = VideoReponse(driver)
 
         f.goto_youtube()
         f.goto_channel("step-in forum")

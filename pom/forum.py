@@ -6,8 +6,8 @@ log.setLevel(logging.DEBUG)
 
 
 class Forum:
-    def __init__(self):
-        pass
+    def __init__(self, driver):
+        self.driver = driver
 
     def goto_youtube(self):
         log.debug(f"Going to open YouTube")

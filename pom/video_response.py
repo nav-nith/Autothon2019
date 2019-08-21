@@ -6,8 +6,8 @@ log.setLevel(logging.DEBUG)
 
 
 class VideoReponse:
-    def __init__(self):
-        pass
+    def __init__(self, driver):
+        self.driver = driver
 
     def get_video_title(self):
         log.debug(f"Video title: ")
