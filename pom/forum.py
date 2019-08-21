@@ -20,7 +20,7 @@ class Forum:
 
     def goto_channel(self, channel_name):
         log.debug(f"navigate to youtube channel page")
-        channel_elem = WebDriverWait(self.chrome_driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
+        channel_elem = WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.ID, 'channel-title')))
         channel_elem.click()
         pass
 
