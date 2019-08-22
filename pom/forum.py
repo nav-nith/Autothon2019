@@ -57,16 +57,18 @@ class Forum:
                 self.video_title_elem = WebDriverWait(self.driver, 1).until(ec.presence_of_element_located((By.XPATH, video_tile_locator)))
             except Exception:
                 print("Scrolling..")
-                y += 500
+                if self.is_mobile:
+                    y += 10
+                else:
+                    y += 500
                 self.driver.execute_script(f"window.scrollTo(0, {y})")
-                if self.driver.find_element_by_xpath(show_more_locator).is_displayed():
-                    self.driver.find_element_by_xpath(show_more_locator).click()
                 if index == (end - 1):
                     raise
             else:
                 break
 
         ActionChains(self.driver).move_to_element(self.video_title_elem).perform()
+        # self.driver.execute_script("arguments[0].scrollIntoView();", video_title_elem)
 
     def play_video(self):
         self.video_title_elem.click()

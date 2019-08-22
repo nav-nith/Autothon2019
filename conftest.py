@@ -60,6 +60,7 @@ def get_mobile_driver():
     desired_caps['noReset'] = 'True'
     desired_caps['chromedriverExecutable'] = MOBILE_CHROMEDRIVER_PATH
     desired_caps['browserName'] = 'Chrome'
+    desired_caps['nativeWebScreenshot'] = 'True'
 
     mobile_driver = appium_webdriver.Remote(f'http://{APPIUM_HOST}:{APPIUM_PORT}/wd/hub', desired_caps)
 
