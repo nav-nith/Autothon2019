@@ -49,6 +49,7 @@ class Forum:
         print(f"Title: {video_title}")
         assert video_title, "Video title is empty!"
         video_tile_locator = "//a/h4[text()='"+video_title+"']" if self.is_mobile else "//a[text()='"+video_title+"']/.."
+        show_more_locator = "//div[text()='Show more']"
         y = 0
         end = 30
         for index in range(end):
@@ -58,6 +59,8 @@ class Forum:
                 print("Scrolling..")
                 y += 500
                 self.driver.execute_script(f"window.scrollTo(0, {y})")
+                if self.driver.find_element_by_xpath(show_more_locator).is_displayed():
+                    self.driver.find_element_by_xpath(show_more_locator).click()
                 if index == (end - 1):
                     raise
             else:
