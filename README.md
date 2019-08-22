@@ -2,13 +2,13 @@
 Autothon Repository for STeP-IN Summit 2019
 
 ## Challenge
-<img width="900" src="" border="1">
+<img width="500" src="" border="1">
 
 ## System Overview
-<img width="900" src="" border="1">
+<img width="500" src="" border="1">
 
 ## SW Design
-<img width="900" src="" border="1">
+<img width="500" src="" border="1">
 
 ## Environment Setup
 ### CI/CD Setup
