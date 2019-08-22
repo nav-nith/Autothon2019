@@ -49,7 +49,7 @@ class Forum:
         print(f"Title: {video_title}")
         assert video_title, "Video title is empty!"
         video_tile_locator = "//a/h4[text()='"+video_title+"']" if self.is_mobile else "//a[text()='"+video_title+"']/.."
-        show_more_locator = "//div[text()='Show more']"
+        show_more_locator = "c3-next-continuation .cbox"
         y = 0
         end = 30
         for index in range(end):
@@ -71,6 +71,8 @@ class Forum:
         # self.driver.execute_script("arguments[0].scrollIntoView();", video_title_elem)
 
     def play_video(self):
+        video_tile_locator = "//a/h4[text()='SUMMIT 2019 Promo']" if self.is_mobile else "//a[text()='SUMMIT 2019 Promo']/.."
+        self.video_title_elem = WebDriverWait(self.driver, 1).until(ec.presence_of_element_located((By.XPATH, video_tile_locator)))
         self.video_title_elem.click()
         youtube_video_title_locator = '.slim-video-metadata-title' if self.is_mobile else '#info-contents .title'
         WebDriverWait(self.driver, delay).until(ec.presence_of_element_located((By.CSS_SELECTOR, youtube_video_title_locator)))
@@ -97,7 +99,7 @@ class Forum:
             else:
                 return asd
 
-        pause_play()
+        # pause_play()
 
         settings_css = "#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-button.ytp-settings-button"
         elem_operation_css(settings_css, True)

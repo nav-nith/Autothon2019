@@ -21,7 +21,7 @@ class TestForum:
 
         video_title = video_response.get_video_title()
 
-        f.scroll_to_view(video_title)
+        f.scroll_to_view("SUMMIT 2019 Promo")
 
         driver.get_screenshot_as_file(f"screenshot_{time.strftime('%Y%m%d-%H%M%S')}.png")
 
