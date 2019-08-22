@@ -14,6 +14,7 @@ Autothon Repository for STeP-IN Summit 2019
 ### CI/CD Setup
 1. Setup Jenkins and Portainer
 ```
+cd ci/compose
 docker-compose up -d
 ```
 2. Jenkins Plugin requirements
